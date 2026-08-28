@@ -1,0 +1,11 @@
+title: Leixing Jiang | Accounting Researcher
+description: Leixing Jiang is an Accounting Ph.D. candidate at the University of Alberta researching innovation, disclosure, and human capital.
+url: https://leixing-jiang.github.io
+baseurl: ""
+author: Leixing Jiang
+lang: en
+timezone: America/Edmonton
+plugins:
+  - jekyll-seo-tag
+exclude:
+  - README.md
