@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Analytics preferences | Leixing Jiang</title>
+  <link rel="stylesheet" href="academic.css">
+  <style>
+    .preferences { max-width: 42rem; }
+    .preference-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0; }
+    button { font: inherit; min-height: 44px; padding: .65rem 1rem; border: 1px solid var(--navy); border-radius: 4px; background: var(--navy); color: white; cursor: pointer; }
+    button.secondary { background: white; color: var(--navy); }
+    button:focus-visible { outline: 2px solid var(--navy); outline-offset: 4px; }
+    button:disabled { opacity: .6; cursor: default; }
+    #status { padding: 1rem; background: #f2f4f8; }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="page-heading"><h1>Analytics preferences</h1></header>
+    <section class="document preferences" aria-label="Umami tracking preferences">
+      <p>Exclude your own visits and CV clicks from this website's Umami statistics.</p>
+      <p id="status" role="status" aria-live="polite">Checking this browser's preference…</p>
+      <div class="preference-actions">
+        <button id="exclude" type="button" disabled>Exclude my visits and clicks</button>
+        <button id="include" type="button" class="secondary" disabled>Allow tracking again</button>
+      </div>
+      <p>This setting applies to all three pages in this browser only. Open this page and enable exclusion separately on each browser or device you use. Clearing website data removes the setting; private browsing uses separate storage.</p>
+      <p>Already recorded activity is unchanged. This preference affects Umami only, not GoatCounter. This preferences page does not load either tracker.</p>
+      <p>After changing the setting, reload any other open website tabs.</p>
+      <p><a href="./">Return to website</a></p>
+      <noscript><p>JavaScript must be enabled to save this browser preference.</p></noscript>
+    </section>
+  </main>
+  <script>
+    (() => {
+      const key = 'umami.disabled';
+      const status = document.getElementById('status');
+      const exclude = document.getElementById('exclude');
+      const include = document.getElementById('include');
+      function refresh() {
+        try {
+          const disabled = Boolean(localStorage.getItem(key));
+          status.textContent = disabled
+            ? 'Exclusion is ON. Future visits and CV clicks from this browser will not be recorded by Umami.'
+            : 'Exclusion is OFF. Visits and CV clicks from this browser can be recorded by Umami.';
+          exclude.disabled = disabled;
+          include.disabled = !disabled;
+        } catch {
+          status.textContent = 'Browser storage is unavailable. Exclusion could not be verified. Allow website storage and try again.';
+          exclude.disabled = true;
+          include.disabled = true;
+        }
+      }
+      function save(disabled) {
+        try {
+          if (disabled) localStorage.setItem(key, '1');
+          else localStorage.removeItem(key);
+          refresh();
+        } catch {
+          status.textContent = 'The preference could not be saved. Allow website storage and try again.';
+        }
+      }
+      exclude.addEventListener('click', () => save(true));
+      include.addEventListener('click', () => save(false));
+      window.addEventListener('storage', refresh);
+      refresh();
+    })();
+  </script>
+</body>
+</html>
